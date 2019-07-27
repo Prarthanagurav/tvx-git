@@ -27,19 +27,15 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: install dependencies
+          name: verify cookbook
           command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-
+            foodcritic cookbooks/test
       - save_cache:
           paths:
             - ./vendor/bundle
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
 
-      # Database setup
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
-
+    
       # run tests!
       - run:
           name: run tests
